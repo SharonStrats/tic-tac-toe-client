@@ -5,6 +5,7 @@ import { checkWinner, isWinner } from '../helpers/gameHelper';
 const ENDPOINT = "http://127.0.0.1:4001";
 const socket = io(ENDPOINT);
 
+// Could use interface of GameMoveData and WinnerNotificationData but I split them apart
 
 //first player gets X and second player gets O.
 const Game: React.FC = () => {
@@ -30,7 +31,7 @@ const Game: React.FC = () => {
                 socket.emit("nextMove", { whosup: (whosup.localeCompare('X') === 0) ? 'O' : 'X', gameBoard});
                 if (checkWinner(whosup, gameBoard)) {
                     if (isWinner(row, col, whosup, gameBoard)) {
-                        socket.emit("winner", whosup)
+                        socket.emit("winner", { whosup, board: gameBoard})
                     }
                 }
             }
@@ -44,14 +45,17 @@ const Game: React.FC = () => {
         socket.on('nextPlayer', (data:any) => {
             setWhosup(data.whosup);
             setGameBoard(data.gameBoard);
-            const playerID = sessionStorage.getItem("playerID");
-            if (playerID) {
-                if (playerID.localeCompare(data.whosup) === 0) {
+            const playerSymbol = sessionStorage.getItem("playerSymbol");
+            if (playerSymbol) {
+                if (playerSymbol.localeCompare(data.whosup) === 0) {
                     window.alert("Your turn");
                 }
             }
-            socket.on("winnerNotification", (message: string) => {
-                window.alert(message);
+
+            socket.on("winnerNotification", (data: any) => {
+                setGameBoard(data.board);  
+                sessionStorage.removeItem("playerSymbol");
+                window.alert(data.message);
             });
         });
     }, [whosup, gameBoard]);  

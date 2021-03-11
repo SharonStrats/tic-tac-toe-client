@@ -16,5 +16,5 @@
     transition: transform .3s;
 }
 .tictacbox:active {
-    transform: translateY(1rem) scale(1);
+    transform: translateY(0.5rem) scale(1);
 }
