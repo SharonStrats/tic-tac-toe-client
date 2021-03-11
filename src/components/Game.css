@@ -1,0 +1,20 @@
+.gameBoard {
+    display: flex;
+}
+.tictacbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    margin: 1em;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    box-shadow: 0 1.5rem 4rem rgba(0,0,0,0.15);
+    background-color:  rgba(63, 176, 172, 0.8);
+    text-align: center;
+    transition: transform .3s;
+}
+.tictacbox:active {
+    transform: translateY(1rem) scale(1);
+}

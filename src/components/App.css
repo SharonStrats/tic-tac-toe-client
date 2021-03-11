@@ -1,0 +1,13 @@
+body {
+    background-color:#DCDCDC;
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-size: 1.4rem;
+}
+.container {
+    display: grid;
+    justify-content: center;
+}
+h1 {
+    text-align: center;
+}
