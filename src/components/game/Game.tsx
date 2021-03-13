@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import './Game.css';
+import Board from '../board/Board';
 import { io } from 'socket.io-client';
-import { checkWinner, isWinner } from '../helpers/gameHelper';
+//import { checkWinner, isWinner } from '../helpers/gameHelper';
 const ENDPOINT = "http://127.0.0.1:4001";
 const socket = io(ENDPOINT);
 
@@ -29,11 +30,11 @@ const Game: React.FC = () => {
                 setGameBoard(newGameBoard);
 
                 socket.emit("nextMove", { whosup: (whosup.localeCompare('X') === 0) ? 'O' : 'X', gameBoard});
-                if (checkWinner(whosup, gameBoard)) {
+               /* if (checkWinner(whosup, gameBoard)) {
                     if (isWinner(row, col, whosup, gameBoard)) {
                         socket.emit("winner", { whosup, board: gameBoard})
                     }
-                }
+                } */
             }
         }
     }
@@ -57,27 +58,15 @@ const Game: React.FC = () => {
                 sessionStorage.removeItem("playerSymbol");
                 window.alert(data.message);
             });
+
+            socket.on("wait", (message) => {
+                window.alert(message);
+            });
         });
     }, [whosup, gameBoard]);  
-
+    console.log("game board " + gameBoard);
     return (
-        <div className="gameBoard">
-            <div className="row1">
-                <div className="tictacbox" id="00" onClick={onClickButton}>{gameBoard[0][0]}</div>
-                <div className="tictacbox" id="01" onClick={onClickButton}>{gameBoard[0][1]}</div>
-                <div className="tictacbox" id="02" onClick={onClickButton}>{gameBoard[0][2]}</div>
-            </div>
-            <div className="row2">
-                <div className="tictacbox" id="10" onClick={onClickButton}>{gameBoard[1][0]}</div>
-                <div className="tictacbox" id="11" onClick={onClickButton}>{gameBoard[1][1]}</div>
-                <div className="tictacbox" id="12" onClick={onClickButton}>{gameBoard[1][2]}</div>
-            </div>
-            <div className="row3">
-                <div className="tictacbox" id="20" onClick={onClickButton}>{gameBoard[2][0]}</div>
-                <div className="tictacbox" id="21" onClick={onClickButton}>{gameBoard[2][1]}</div>
-                <div className="tictacbox" id="22" onClick={onClickButton}>{gameBoard[2][2]}</div>
-            </div>
-        </div>
+        <Board numberOfRows={3} onClickButton={onClickButton} board={gameBoard}/>
     );
 };
 

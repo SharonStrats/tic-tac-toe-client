@@ -1,7 +1,4 @@
-.gameBoard {
-    display: flex;
-}
-.tictacbox {
+.board-box {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,6 +12,6 @@
     text-align: center;
     transition: transform .3s;
 }
-.tictacbox:active {
+.board-box:active {
     transform: translateY(0.5rem) scale(1);
 }
